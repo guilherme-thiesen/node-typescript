@@ -14,10 +14,12 @@ interface Request {
 }
 
 class CreateTransactionService {
-  public async execute(
-    { title, value, type, category }: Request,
-    verifyFunds = true,
-  ): Promise<Transaction> {
+  public async execute({
+    title,
+    value,
+    type,
+    category,
+  }: Request): Promise<Transaction> {
     const transactionRepository = getCustomRepository(TransactionRepository);
     const categoryRepository = getCustomRepository(CategoryRepository);
 
@@ -27,7 +29,7 @@ class CreateTransactionService {
 
     const balance = await transactionRepository.getBalance();
 
-    if (verifyFunds && type === 'outcome' && balance.total < value) {
+    if (type === 'outcome' && balance.total < value) {
       throw new AppError('Insuficient Funds');
     }
 
