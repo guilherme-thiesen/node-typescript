@@ -6,7 +6,9 @@ class DeleteTransactionService {
   public async execute(id: string): Promise<void> {
     const transactionsRepository = getRepository(Transaction);
 
-    const findTransaction = transactionsRepository.find({ where: { id } });
+    const findTransaction = await transactionsRepository.find({
+      where: { id },
+    });
 
     if (!findTransaction) {
       throw new AppError('Transaction not found', 400);
